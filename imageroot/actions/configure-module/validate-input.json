@@ -3,6 +3,29 @@
     "title": "configure-module input",
     "$id": "http://schema.nethserver.org/passbolt/configure-module-input.json",
     "description": "Configure passbolt",
-    "examples": [],
-    "type": "object"
+    "examples": [
+        {
+            "host": "passbolt.gs.nethserver.net",
+            "lets_encrypt": true
+          }
+    ],
+    "type": "object",
+    "required": [
+        "host",
+        "lets_encrypt"
+      ],
+      "properties": {
+        "host": {
+          "description": "Host name for Passbolt, like 'passbolt.nethserver.org'",
+          "format": "hostname",
+          "pattern": "\\.",
+          "type": "string",
+          "minLength": 1
+        },
+        "lets_encrypt": {
+          "type": "boolean",
+          "title": "Let's Encrypt certificate",
+          "description": "Request a valid Let's Encrypt certificate."
+        }
+    }
 }
