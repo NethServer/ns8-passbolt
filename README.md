@@ -34,6 +34,38 @@ Send a test HTTP request to the passbolt backend service:
 
     curl https://passbolt.gs.nethserver.net/
 
+
+### Create admin user
+
+To create the administrator user, execute:
+```
+runagent -m passbolt1 podman exec -ti passbolt-app /bin/bash /usr/share/php/passbolt/bin/cake passbolt register_user -u jdoe@nethserver.org -f John -l Doe -r admin
+```
+
+Make sure to replace:
+- `passbolt1`: the instance name
+- `jdoe@nethserver.org`: the email address of the admin user
+- `John`: the first name of the admin user
+- `Doe`: the last name of the admin user
+
+
+The output will be something like:
+```
+     ____                  __          ____  
+    / __ \____  _____ ____/ /_  ____  / / /_ 
+   / /_/ / __ `/ ___/ ___/ __ \/ __ \/ / __/ 
+  / ____/ /_/ (__  |__  ) /_/ / /_/ / / /    
+ /_/    \__,_/____/____/_.___/\____/_/\__/   
+
+ Open source password manager for teams
+-------------------------------------------------------------------------------
+User saved successfully.
+To start registration follow the link provided in your mailbox or here: 
+https://passbolt.gs.nethserver.net/setup/start/b96b40be-b71f-46c7-938d-dffb71d9efc8/293687a9-0203-4830-93de-a6c9b8d016d9
+```
+
+Visit the URL provided in the output to complete the registration process.
+
 ## Smarthost setting discovery
 
 Some configuration settings, like the smarthost setup, are not part of the
