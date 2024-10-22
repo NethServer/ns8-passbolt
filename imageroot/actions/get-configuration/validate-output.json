@@ -3,6 +3,8 @@
     "title": "get-configuration output",
     "$id": "http://schema.nethserver.org/passbolt/get-configuration-output.json",
     "description": "Get passbolt configuration",
-    "examples": [],
+    "examples": [
+        {"host": "passbolt.gs.nethserver.net", "lets_encrypt": false}
+    ],
     "type": "object"
 }

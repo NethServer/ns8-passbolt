@@ -20,7 +20,7 @@ le = request.get("lets_encrypt", False)
 # Setup environment for passbolt app
 config = {
     "APP_FULL_BASE_URL": f"https://{host}",
-    "DATASOURCES_DEFAULT_HOST": "127.0.0.1",
+    "DATASOURCES_DEFAULT_HOST": "db",
     "DATASOURCES_DEFAULT_USERNAME": "passbolt",
     "DATASOURCES_DEFAULT_PASSWORD": "passbolt",
     "DATASOURCES_DEFAULT_DATABASE": "passbolt"
