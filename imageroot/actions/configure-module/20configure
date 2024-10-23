@@ -30,10 +30,10 @@ agent.write_envfile('config.env', config)
 
 # Setup environment for DB
 db_config = {
-    "MARIADB_RANDOM_ROOT_PASSWORD": "true",
-    "MYSQL_DATABASE": "passbolt",
-    "MYSQL_USER": "passbolt",
-    "MYSQL_PASSWORD": "passbolt",
+    "MARIADB_RANDOM_PASSWORD": "passbolt",
+    "MARIADB_DATABASE": "passbolt",
+    "MARIADB_USER": "passbolt",
+    "MARIADB_PASSWORD": "passbolt",
 }
 agent.write_envfile('database.env', db_config)
 
