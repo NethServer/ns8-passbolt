@@ -24,7 +24,12 @@
         "title": "Settings",
         "configure_instance": "Configure {instance}",
         "save": "Save",
-        "test_field": "Test field"
+        "host": "Host name",
+        "lets_encrypt": "Request Let's Encrypt certificate",
+        "host_placeholder": "E.g. passbolt.example.org",
+        "execute_command": "After first configuration, execute the below command to create the admin user:",
+        "output_example": "The command will output a URL to complete the setup in a browser. The URL will look like this:",
+        "first_config": "runagent -m {instance} podman exec -ti passbolt-app /bin/bash /usr/share/php/passbolt/bin/cake passbolt register_user -u jdoe@nethserver.org -f John -l Doe -r admin"
     },
     "about": {
         "title": "About"

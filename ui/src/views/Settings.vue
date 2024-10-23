@@ -11,45 +11,51 @@
     </cv-row>
     <cv-row v-if="error.getConfiguration">
       <cv-column>
-        <NsInlineNotification
-          kind="error"
-          :title="$t('action.get-configuration')"
-          :description="error.getConfiguration"
-          :showCloseButton="false"
-        />
+        <NsInlineNotification kind="error" :title="$t('action.get-configuration')" :description="error.getConfiguration"
+          :showCloseButton="false" />
       </cv-column>
     </cv-row>
     <cv-row>
       <cv-column>
         <cv-tile light>
           <cv-form @submit.prevent="configureModule">
-            <!-- TODO remove test field and code configuration fields -->
-            <cv-text-input
-              :label="$t('settings.test_field')"
-              v-model="testField"
-              :placeholder="$t('settings.test_field')"
-              :disabled="loading.getConfiguration || loading.configureModule"
-              :invalid-message="error.testField"
-              ref="testField"
-            ></cv-text-input>
+            <cv-text-input :label="$t('settings.host')" v-model="host" :placeholder="$t('settings.host_placeholder')"
+              :disabled="loading.getConfiguration || loading.configureModule" :invalid-message="error.host"
+              ref="host"></cv-text-input>
+            <cv-toggle value="letsEncrypt" :label="$t('settings.lets_encrypt')" v-model="lets_encrypt"
+              :disabled="loading.getConfiguration || loading.configureModule" class="mg-bottom">
+              <template slot="text-left">{{
+                $t("settings.disabled")
+              }}</template>
+              <template slot="text-right">{{
+                $t("settings.enabled")
+              }}</template>
+            </cv-toggle>
             <cv-row v-if="error.configureModule">
               <cv-column>
-                <NsInlineNotification
-                  kind="error"
-                  :title="$t('action.configure-module')"
-                  :description="error.configureModule"
-                  :showCloseButton="false"
-                />
+                <NsInlineNotification kind="error" :title="$t('action.configure-module')"
+                  :description="error.configureModule" :showCloseButton="false" />
               </cv-column>
             </cv-row>
-            <NsButton
-              kind="primary"
-              :icon="Save20"
-              :loading="loading.configureModule"
-              :disabled="loading.getConfiguration || loading.configureModule"
-              >{{ $t("settings.save") }}</NsButton
-            >
+            <NsButton kind="primary" :icon="Save20" :loading="loading.configureModule"
+              :disabled="loading.getConfiguration || loading.configureModule">{{ $t("settings.save") }}</NsButton>
           </cv-form>
+        </cv-tile>
+      </cv-column>
+    </cv-row>
+    <cv-row>
+      <cv-column>
+        <cv-tile light>
+          <p>{{ $t("settings.execute_command") }}</p>
+          <NsCodeSnippet :copyTooltip="$t('common.copy_to_clipboard')" :copy-feedback="$t('common.copied_to_clipboard')"
+            :feedback-aria-label="$t('common.copied_to_clipboard')" :wrap-text="true" :moreText="$t('common.show_more')"
+            :lessText="$t('common.show_less')" hideExpandButton class="mg-top-md mg-bottom-md">{{
+              $t("settings.first_config", { instance: instanceName }) }}</NsCodeSnippet>
+          <p>{{ $t("settings.output_example") }}</p>
+          <NsCodeSnippet :copyTooltip="$t('common.copy_to_clipboard')" :copy-feedback="$t('common.copied_to_clipboard')"
+            :feedback-aria-label="$t('common.copied_to_clipboard')" :wrap-text="true" :moreText="$t('common.show_more')"
+            :lessText="$t('common.show_less')" hideExpandButton class="mg-top-md mg-bottom-md">https://{{ host || 'passbolt.example.org'
+            }}/setup/start/b96b40be-b71f-46c7-938d-dffb71d9efc8/293687a9-0203-4830-93de-a6c9b8d016d9</NsCodeSnippet>
         </cv-tile>
       </cv-column>
     </cv-row>
@@ -85,7 +91,8 @@ export default {
         page: "settings",
       },
       urlCheckInterval: null,
-      testField: "", // TODO remove
+      host: "",
+      lets_encrypt: false,
       loading: {
         getConfiguration: false,
         configureModule: false,
@@ -93,7 +100,8 @@ export default {
       error: {
         getConfiguration: "",
         configureModule: "",
-        testField: "", // TODO remove
+        host: "",
+        lets_encrypt: ""
       },
     };
   },
@@ -160,26 +168,20 @@ export default {
       this.loading.getConfiguration = false;
       const config = taskResult.output;
 
-      // TODO set configuration fields
-      // ...
+      this.host = config.host;
+      this.lets_encrypt = config.lets_encrypt;
 
-      // TODO remove
-      console.log("config", config);
-
-      // TODO focus first configuration field
-      this.focusElement("testField");
+      this.focusElement("host");
     },
     validateConfigureModule() {
       this.clearErrors(this);
       let isValidationOk = true;
-
-      // TODO remove testField and validate configuration fields
-      if (!this.testField) {
+      if (!this.host) {
         // test field cannot be empty
-        this.error.testField = this.$t("common.required");
+        this.error.host = this.$t("common.required");
 
         if (isValidationOk) {
-          this.focusElement("testField");
+          this.focusElement("host");
           isValidationOk = false;
         }
       }
