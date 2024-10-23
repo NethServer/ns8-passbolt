@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#
+# Copyright (C) 2024 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+systemctl --user -q is-active passbolt-db
+
+if [ $? -eq 0 ]; then
+    podman exec passbolt-db sh -c 'exec mysqldump --all-databases -uroot -p"passbolt"' > restore/dump.sql
+fi
