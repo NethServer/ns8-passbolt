@@ -52,10 +52,8 @@
             :lessText="$t('common.show_less')" hideExpandButton class="mg-top-md mg-bottom-md">{{
               $t("settings.first_config", { instance: instanceName }) }}</NsCodeSnippet>
           <p>{{ $t("settings.output_example") }}</p>
-          <NsCodeSnippet :copyTooltip="$t('common.copy_to_clipboard')" :copy-feedback="$t('common.copied_to_clipboard')"
-            :feedback-aria-label="$t('common.copied_to_clipboard')" :wrap-text="true" :moreText="$t('common.show_more')"
-            :lessText="$t('common.show_less')" hideExpandButton class="mg-top-md mg-bottom-md">https://{{ host || 'passbolt.example.org'
-            }}/setup/start/b96b40be-b71f-46c7-938d-dffb71d9efc8/293687a9-0203-4830-93de-a6c9b8d016d9</NsCodeSnippet>
+          <pre class="mg-top-md mg-bottom-md">https://{{ host || 'passbolt.example.org'
+            }}/setup/start/b96b40be-b71f-46c7-938d-dffb71d9efc8/293687a9-0203-4830-93de-a6c9b8d016d9</pre>
         </cv-tile>
       </cv-column>
     </cv-row>
@@ -229,7 +227,8 @@ export default {
         this.createModuleTaskForApp(this.instanceName, {
           action: taskAction,
           data: {
-            // TODO configuration fields
+            host: this.host,
+            lets_encrypt: this.lets_encrypt,
           },
           extra: {
             title: this.$t("settings.configure_instance", {

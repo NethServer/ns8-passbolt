@@ -1,17 +1,21 @@
 {
-  "name": "passbolt",
+  "name": "Passbolt",
   "description": {
-    "en": "My passbolt module"
+    "en": "Passbolt is an Open Source password manager for teams.",
+    "it": "Passbolt è un gestore di password Open Source per team."
   },
-  "categories": [],
+  "categories": [
+    "security",
+    "collaboration"
+  ],
   "authors": [
     {
-      "name": "Name Surname",
-      "email": "author@yourmail.org"
+      "name": "Giacomo Sanchietti",
+      "email": "giacomo.sanchietti@nethesis.it"
     }
   ],
   "docs": {
-    "documentation_url": "https://docs.passbolt.com/",
+    "documentation_url": "https://www.passbolt.com/docs/",
     "bug_url": "https://github.com/NethServer/dev",
     "code_url": "https://github.com/author/ns8-passbolt"
   },

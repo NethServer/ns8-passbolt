@@ -25,6 +25,8 @@
         "configure_instance": "Configure {instance}",
         "save": "Save",
         "host": "Host name",
+        "disabled": "Disabled",
+        "enabled": "Enabled",
         "lets_encrypt": "Request Let's Encrypt certificate",
         "host_placeholder": "E.g. passbolt.example.org",
         "execute_command": "After first configuration, execute the below command to create the admin user:",
