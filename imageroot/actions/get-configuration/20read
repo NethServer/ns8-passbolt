@@ -13,6 +13,6 @@ try:
     with open("config.json", 'r') as fp:
         config = json.load(fp)
 except:
-    config = {}
+    config = {"host": "", "lets_encrypt": False}
 
 json.dump(config, fp=sys.stdout)
