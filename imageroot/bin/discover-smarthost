@@ -41,6 +41,9 @@ with open(envfile + ".tmp", "w") as efp:
         smtp_settings['encrypt_smtp'] = 'null'
     print(f"EMAIL_TRANSPORT_DEFAULT_TLS={smtp_settings['encrypt_smtp']}", file=efp)
     print(f"EMAIL_DEFAULT_FROM=no-reply@{host}", file=efp)
+    print(f"PASSBOLT_PLUGINS_SMTP_SETTINGS_SECURITY_SSL_VERIFY_PEER=false", file=efp)
+    print(f"PASSBOLT_PLUGINS_SMTP_SETTINGS_SECURITY_SSL_VERIFY_PEER_NAME=false", file=efp)
+    print(f"PASSBOLT_PLUGINS_SMTP_SETTINGS_SECURITY_SSL_ALLOW_SELF_SIGNED=true", file=efp)
 
 # Commit changes by replacing the existing envfile:
 os.replace(envfile + ".tmp", envfile)
