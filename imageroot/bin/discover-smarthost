@@ -34,8 +34,11 @@ if not smtp_settings['enabled']:
 with open(envfile + ".tmp", "w") as efp:
     print(f"EMAIL_TRANSPORT_DEFAULT_HOST={smtp_settings['host']}", file=efp)
     print(f"EMAIL_TRANSPORT_DEFAULT_PORT={smtp_settings['port']}", file=efp)
-    print(f"EMAIL_TRANSPORT_DEFAULT_USERNAME={smtp_settings['username']}", file=efp)
-    print(f"EMAIL_TRANSPORT_DEFAULT_PASSWORD={smtp_settings['password']}", file=efp)
+    if smtp_settings['username']:
+        print(f"EMAIL_TRANSPORT_DEFAULT_USERNAME={smtp_settings['username']}", file=efp)
+        print(f"EMAIL_TRANSPORT_DEFAULT_PASSWORD={smtp_settings['password']}", file=efp)
+    if smtp_settings['encrypt_smtp'] == 'none':
+        smtp_settings['encrypt_smtp'] = 'null'
     print(f"EMAIL_TRANSPORT_DEFAULT_TLS={smtp_settings['encrypt_smtp']}", file=efp)
     print(f"EMAIL_DEFAULT_FROM=no-reply@{host}", file=efp)
 
