@@ -26,7 +26,7 @@ trap 'rm -rfv initdb.d/' EXIT
 
 # we start a container to initiate a database and load the dump
 # at the end of passbolt_restore.sh the dump is loaded and 
-# we exit the container
+# we exit the container:
 podman run \
   --rm \
   --interactive \
