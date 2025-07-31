@@ -5,11 +5,15 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-import agent
 import os
+import sys
+import json
+import agent.tasks
 
-configure_retval = agent.tasks.run(agent_id=os.environ['AGENT_ID'], action='configure-module', data={
-    "lets_encrypt": os.environ["TRAEFIK_LETS_ENCRYPT"] == "True",
-    "host": os.environ["TRAEFIK_HOST"],
-})
-agent.assert_exp(configure_retval['exit_code'] == 0, "The configure-module subtask failed!")
+config = {}
+
+# Read current configuration from config file
+with open('config.json', 'r') as cf:
+    config = json.loads(cf.read())
+
+agent.tasks.run(agent_id=os.environ['AGENT_ID'], action='configure-module', data=config)
