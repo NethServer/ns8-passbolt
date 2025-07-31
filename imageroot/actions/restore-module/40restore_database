@@ -10,7 +10,7 @@ exec 1>&2 # Redirect any output to the journal (stderr)
 
 # Prepare an initialization script that restores the dump file
 mkdir -vp initdb.d
-mv -v passbolt.sql initdb.d
+mv -v state/dump.sql initdb.d
 #do the bash file to restore and exit once done
 cat - >initdb.d/zz_passbolt_restore.sh <<'EOS'
 # Print additional information:
