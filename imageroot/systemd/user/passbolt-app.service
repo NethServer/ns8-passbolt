@@ -2,7 +2,7 @@
 [Unit]
 Description=Podman passbolt-app.service
 BindsTo=passbolt.service
-After=passbolt.service
+After=passbolt.service passbolt-db.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
@@ -11,7 +11,14 @@ Restart=always
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/passbolt-app.pid %t/passbolt-app.ctr-id
 ExecStartPre=-runagent discover-smarthost
-ExecStart=/usr/bin/podman run --conmon-pidfile %t/passbolt-app.pid --cidfile %t/passbolt-app.ctr-id --cgroups=no-conmon --pod-id-file %t/passbolt.pod-id --replace -d --name passbolt-app --env-file=%S/state/config.env --env-file=%S/state/smarthost.env -v passbolt-gpg:/etc/passbolt/gpg -v passbolt-jwt:/etc/passbolt/jwt ${PASSBOLT_IMAGE}
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/passbolt-app.pid --cidfile %t/passbolt-app.ctr-id --cgroups=no-conmon \
+    --pod-id-file %t/passbolt.pod-id --replace -d \
+    --name passbolt-app \
+    --env-file=%S/state/config.env \
+    --env-file=%S/state/smarthost.env \
+    --volume passbolt-gpg:/etc/passbolt/gpg:z \
+    --volume passbolt-jwt:/etc/passbolt/jwt:z \
+    ${PASSBOLT_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/passbolt-app.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/passbolt-app.ctr-id
 PIDFile=%t/passbolt-app.pid

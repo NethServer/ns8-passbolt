@@ -1,5 +1,6 @@
 [Unit]
 Description=Podman passbolt-db.service
+BindsTo=passbolt.service
 After=passbolt.service
 
 [Service]
@@ -9,7 +10,12 @@ Restart=always
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/passbolt-db.pid %t/passbolt-db.ctr-id
 ExecStartPre=/bin/mkdir -p %S/state/restore/
-ExecStart=/usr/bin/podman run --conmon-pidfile %t/passbolt-db.pid --cidfile %t/passbolt-db.ctr-id --cgroups=no-conmon --pod-id-file %t/passbolt.pod-id --replace -d --name passbolt-db --env-file=%S/state/database.env  -v passbolt-db-data:/var/lib/mysql -v %S/state/restore/:/docker-entrypoint-initdb.d/:z ${MARIADB_IMAGE}
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/passbolt-db.pid --cidfile %t/passbolt-db.ctr-id \
+    --cgroups=no-conmon --pod-id-file %t/passbolt.pod-id --replace -d \
+    --name passbolt-db \
+    --env-file=%S/state/database.env \
+    --volume passbolt-db-data:/var/lib/mysql:z \
+    ${MARIADB_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/passbolt-db.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/passbolt-db.ctr-id
 PIDFile=%t/passbolt-db.pid
