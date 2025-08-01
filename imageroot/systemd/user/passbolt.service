@@ -1,6 +1,7 @@
 [Unit]
 Description=Podman passbolt.service
-Before=passbolt-app.service passbolt-db.service
+Requires=passbolt-db.service passbolt-app.service
+Before=passbolt-db.service passbolt-app.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
