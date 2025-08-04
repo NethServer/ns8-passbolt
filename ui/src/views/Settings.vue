@@ -49,10 +49,9 @@
           <p>{{ $t("settings.execute_command") }}</p>
           <NsCodeSnippet :copyTooltip="$t('common.copy_to_clipboard')" :copy-feedback="$t('common.copied_to_clipboard')"
             :feedback-aria-label="$t('common.copied_to_clipboard')" :wrap-text="true" :moreText="$t('common.show_more')"
-            :lessText="$t('common.show_less')" hideExpandButton class="mg-top-md mg-bottom-md">{{
-              $t("settings.first_config", { instance: instanceName }) }}</NsCodeSnippet>
+            :lessText="$t('common.show_less')" hideExpandButton class="mg-top-md mg-bottom-md">{{ adminurl }}</NsCodeSnippet>
           <p>{{ $t("settings.output_example") }}</p>
-          <pre class="mg-top-md mg-bottom-md">{{ adminurl }}</pre>
+          <!-- <pre class="mg-top-md mg-bottom-md">{{ adminurl }}</pre> -->
         </cv-tile>
       </cv-column>
     </cv-row>
