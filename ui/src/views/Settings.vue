@@ -88,8 +88,9 @@ export default {
         page: "settings",
       },
       urlCheckInterval: null,
-      host: "",
+      host: "",      
       lets_encrypt: false,
+      adminurl: "",
       loading: {
         getConfiguration: false,
         configureModule: false,
@@ -98,7 +99,8 @@ export default {
         getConfiguration: "",
         configureModule: "",
         host: "",
-        lets_encrypt: ""
+        lets_encrypt: "",
+        adminurl: "",
       },
     };
   },
@@ -167,6 +169,7 @@ export default {
 
       this.host = config.host;
       this.lets_encrypt = config.lets_encrypt;
+      this.adminurl = config.adminurl;
 
       this.focusElement("host");
     },
@@ -228,6 +231,7 @@ export default {
           data: {
             host: this.host,
             lets_encrypt: this.lets_encrypt,
+            adminurl: this.adminurl,
           },
           extra: {
             title: this.$t("settings.configure_instance", {
