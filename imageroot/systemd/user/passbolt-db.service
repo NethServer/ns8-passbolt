@@ -15,6 +15,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/passbolt-db.pid --cidfile %t/p
     --name passbolt-db \
     --env-file=%S/state/database.env \
     --volume passbolt-db-data:/var/lib/mysql:z \
+    --env MARIADB_AUTO_UPGRADE=1 \
     ${MARIADB_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/passbolt-db.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/passbolt-db.ctr-id

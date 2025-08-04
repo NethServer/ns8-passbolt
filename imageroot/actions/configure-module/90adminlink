@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Exit if admin url was already obtained
+[[ -f adminurl.env ]] && exit 0
+
+# Wait for passbolt-app to be ready
+while ! podman exec passbolt-app /usr/bin/curl -s http://127.0.0.1:8080 ; do echo "Wait for passbolt-app"; sleep 1 ; done
+
+# Create admin user
+/usr/bin/podman exec passbolt-app /bin/bash /usr/share/php/passbolt/bin/cake passbolt register_user -u admin@$(hostname -d) -f Passbolt -l Admin -r admin > adminurl
+
+# Extract link out of admin link output, remove ANSI
+userreg=$(tail -n1 adminurl | sed -e 's/\x1b\[[0-9;]*m//g')
+
+# If the registration was successful put the ADMINURL to adminurl.env
+if [[ "$userreg" != *"User registration failed."* ]]; then
+  echo "User registration successful."
+  echo "ADMINURL=$userreg" > adminurl.env
+  rm -f adminurl
+fi

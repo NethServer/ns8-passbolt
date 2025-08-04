@@ -52,8 +52,7 @@
             :lessText="$t('common.show_less')" hideExpandButton class="mg-top-md mg-bottom-md">{{
               $t("settings.first_config", { instance: instanceName }) }}</NsCodeSnippet>
           <p>{{ $t("settings.output_example") }}</p>
-          <pre class="mg-top-md mg-bottom-md">https://{{ host || 'passbolt.example.org'
-            }}/setup/start/b96b40be-b71f-46c7-938d-dffb71d9efc8/293687a9-0203-4830-93de-a6c9b8d016d9</pre>
+          <pre class="mg-top-md mg-bottom-md">{{ adminurl }}</pre>
         </cv-tile>
       </cv-column>
     </cv-row>

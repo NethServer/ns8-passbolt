@@ -8,11 +8,14 @@
 import json
 import sys
 import agent
+import os
 
 try:
     with open("config.json", 'r') as fp:
         config = json.load(fp)
 except:
     config = {"host": "", "lets_encrypt": False}
+
+config["adminurl"] = agent.read_envfile("adminurl.env")["ADMINURL"] if os.path.exists("adminurl.env") else "No admin URL obtained, it should be available after configuration."
 
 json.dump(config, fp=sys.stdout)
