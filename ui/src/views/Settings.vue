@@ -91,26 +91,6 @@
         </cv-tile>
       </cv-column>
     </cv-row>
-    <!--<cv-row>
-      <cv-column>
-        <cv-tile light>
-          <p>
-            {{ $t("settings.execute_command") }}
-          </p>
-          <NsCodeSnippet
-            :copyTooltip="$t('common.copy_to_clipboard')"
-            :copy-feedback="$t('common.copied_to_clipboard')"
-            :feedback-aria-label="$t('common.copied_to_clipboard')"
-            :wrap-text="true"
-            :moreText="$t('common.show_more')"
-            :lessText="$t('common.show_less')"
-            hideExpandButton
-            class="mg-top-md mg-bottom-md"
-            >{{ adminurl }}
-          </NsCodeSnippet>
-        </cv-tile>
-      </cv-column>
-    </cv-row> -->
   </cv-grid>
 </template>
 

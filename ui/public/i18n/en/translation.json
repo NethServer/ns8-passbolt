@@ -31,6 +31,7 @@
         "lets_encrypt": "Request Let's Encrypt certificate",
         "host_placeholder": "E.g. passbolt.example.org",
         "adminmail_placeholder": "E.g. admin@example.com",
+        "adminmail_format": "A mail address is required",
         "open_passbolt": "Open admin registration",
         "admin_created": "The admin account was created",
         "admin_created_description": "To setup the admin account, click on the link"
