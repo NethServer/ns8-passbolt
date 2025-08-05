@@ -11,19 +11,58 @@
     </cv-row>
     <cv-row v-if="error.getConfiguration">
       <cv-column>
-        <NsInlineNotification kind="error" :title="$t('action.get-configuration')" :description="error.getConfiguration"
-          :showCloseButton="false" />
+        <NsInlineNotification
+          kind="error"
+          :title="$t('action.get-configuration')"
+          :description="error.getConfiguration"
+          :showCloseButton="false"
+        />
+      </cv-column>
+    </cv-row>
+    <cv-row v-if="admin_created && admin_not_active">
+      <cv-column>
+        <NsInlineNotification
+          kind="warning"
+          :title="$t('settings.admin_created')"
+          :description="
+            $t('settings.admin_created_description', {
+              user: 'admin@local',
+              password: 'pilerrocks',
+            })
+          "
+          :showCloseButton="false"
+          @click="goToPassboltWebapp"
+          :actionLabel="$t('settings.open_passbolt')"
+        />
       </cv-column>
     </cv-row>
     <cv-row>
       <cv-column>
         <cv-tile light>
           <cv-form @submit.prevent="configureModule">
-            <cv-text-input :label="$t('settings.host')" v-model="host" :placeholder="$t('settings.host_placeholder')"
-              :disabled="loading.getConfiguration || loading.configureModule" :invalid-message="error.host"
-              ref="host"></cv-text-input>
-            <cv-toggle value="letsEncrypt" :label="$t('settings.lets_encrypt')" v-model="lets_encrypt"
-              :disabled="loading.getConfiguration || loading.configureModule" class="mg-bottom">
+            <cv-text-input
+              :label="$t('settings.host')"
+              v-model="host"
+              :placeholder="$t('settings.host_placeholder')"
+              :disabled="loading.getConfiguration || loading.configureModule"
+              :invalid-message="error.host"
+              ref="host"
+            ></cv-text-input>
+            <cv-text-input
+              :label="$t('settings.adminmail')"
+              v-model="adminmail"
+              :placeholder="$t('settings.adminmail_placeholder')"
+              :disabled="loading.getConfiguration || loading.configureModule || admin_created"
+              :invalid-message="error.adminmail"
+              ref="adminmail"
+            ></cv-text-input>
+            <cv-toggle
+              value="letsEncrypt"
+              :label="$t('settings.lets_encrypt')"
+              v-model="lets_encrypt"
+              :disabled="loading.getConfiguration || loading.configureModule"
+              class="mg-bottom"
+            >
               <template slot="text-left">{{
                 $t("settings.disabled")
               }}</template>
@@ -33,28 +72,45 @@
             </cv-toggle>
             <cv-row v-if="error.configureModule">
               <cv-column>
-                <NsInlineNotification kind="error" :title="$t('action.configure-module')"
-                  :description="error.configureModule" :showCloseButton="false" />
+                <NsInlineNotification
+                  kind="error"
+                  :title="$t('action.configure-module')"
+                  :description="error.configureModule"
+                  :showCloseButton="false"
+                />
               </cv-column>
             </cv-row>
-            <NsButton kind="primary" :icon="Save20" :loading="loading.configureModule"
-              :disabled="loading.getConfiguration || loading.configureModule">{{ $t("settings.save") }}</NsButton>
+            <NsButton
+              kind="primary"
+              :icon="Save20"
+              :loading="loading.configureModule"
+              :disabled="loading.getConfiguration || loading.configureModule"
+              >{{ $t("settings.save") }}</NsButton
+            >
           </cv-form>
         </cv-tile>
       </cv-column>
     </cv-row>
-    <cv-row>
+    <!--<cv-row>
       <cv-column>
         <cv-tile light>
-          <p>{{ $t("settings.execute_command") }}</p>
-          <NsCodeSnippet :copyTooltip="$t('common.copy_to_clipboard')" :copy-feedback="$t('common.copied_to_clipboard')"
-            :feedback-aria-label="$t('common.copied_to_clipboard')" :wrap-text="true" :moreText="$t('common.show_more')"
-            :lessText="$t('common.show_less')" hideExpandButton class="mg-top-md mg-bottom-md">{{ adminurl }}</NsCodeSnippet>
-          <!--<p>{{ $t("settings.output_example") }}</p>
-          <pre class="mg-top-md mg-bottom-md">{{ adminurl }}</pre> -->
+          <p>
+            {{ $t("settings.execute_command") }}
+          </p>
+          <NsCodeSnippet
+            :copyTooltip="$t('common.copy_to_clipboard')"
+            :copy-feedback="$t('common.copied_to_clipboard')"
+            :feedback-aria-label="$t('common.copied_to_clipboard')"
+            :wrap-text="true"
+            :moreText="$t('common.show_more')"
+            :lessText="$t('common.show_less')"
+            hideExpandButton
+            class="mg-top-md mg-bottom-md"
+            >{{ adminurl }}
+          </NsCodeSnippet>
         </cv-tile>
       </cv-column>
-    </cv-row>
+    </cv-row> -->
   </cv-grid>
 </template>
 
@@ -87,9 +143,12 @@ export default {
         page: "settings",
       },
       urlCheckInterval: null,
-      host: "",      
+      host: "",
       lets_encrypt: false,
       adminurl: "",
+      adminmail: "",
+      admin_created: false,
+      admin_not_active: true,
       loading: {
         getConfiguration: false,
         configureModule: false,
@@ -100,6 +159,9 @@ export default {
         host: "",
         lets_encrypt: "",
         adminurl: "",
+        adminmail: "",
+        admin_created: "",
+        admin_not_active: "",
       },
     };
   },
@@ -120,6 +182,9 @@ export default {
     this.getConfiguration();
   },
   methods: {
+    goToPassboltWebapp() {
+      window.open(`${this.adminurl}`, "_blank");
+    },
     async getConfiguration() {
       this.loading.getConfiguration = true;
       this.error.getConfiguration = "";
@@ -169,6 +234,9 @@ export default {
       this.host = config.host;
       this.lets_encrypt = config.lets_encrypt;
       this.adminurl = config.adminurl;
+      this.adminmail = config.adminmail;
+      this.admin_created = config.admin_created;
+      this.admin_not_active = config.admin_not_active;
 
       this.focusElement("host");
     },
@@ -231,6 +299,9 @@ export default {
             host: this.host,
             lets_encrypt: this.lets_encrypt,
             adminurl: this.adminurl,
+            adminmail: this.adminmail,
+            admin_created: this.admin_created,
+            admin_not_active: this.admin_not_active,
           },
           extra: {
             title: this.$t("settings.configure_instance", {

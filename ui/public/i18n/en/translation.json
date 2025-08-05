@@ -25,11 +25,15 @@
         "configure_instance": "Configure {instance}",
         "save": "Save",
         "host": "Host name",
+        "adminmail": "Admin mail address",
         "disabled": "Disabled",
         "enabled": "Enabled",
         "lets_encrypt": "Request Let's Encrypt certificate",
         "host_placeholder": "E.g. passbolt.example.org",
-        "execute_command": "After first configuration, open following URL in a browser to create the admin user:"
+        "adminmail_placeholder": "E.g. admin@example.com",
+        "open_passbolt": "Open admin registration",
+        "admin_created": "The admin account was created",
+        "admin_created_description": "To setup the admin account, click on the link"
     },
     "about": {
         "title": "About"
