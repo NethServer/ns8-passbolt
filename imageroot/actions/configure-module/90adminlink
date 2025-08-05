@@ -4,7 +4,11 @@
 [[ -f adminurl.env ]] && exit 0
 
 # Wait for passbolt-app to be ready
-while ! podman exec passbolt-app /usr/bin/curl -s http://127.0.0.1:8080 ; do echo "Wait for passbolt-app"; sleep 1 ; done
+while ! podman exec passbolt-app /usr/bin/curl -s http://127.0.0.1:8080
+do
+  echo "Wait for passbolt-app"
+  sleep 1
+done
 
 tmpconf=$(mktemp adminurl.XXXXXX)
 trap 'rm -f ${tmpconf}' EXIT
