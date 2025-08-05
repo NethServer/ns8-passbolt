@@ -17,7 +17,12 @@ trap 'rm -f ${tmpconf}' EXIT
 source config.env
 
 # Create admin user
-/usr/bin/podman exec passbolt-app /bin/bash /usr/share/php/passbolt/bin/cake passbolt register_user -u ${ADMINMAIL} -f Passbolt -l Admin -r admin > ${tmpconf}
+/usr/bin/podman exec passbolt-app /bin/bash \
+  /usr/share/php/passbolt/bin/cake passbolt register_user \
+  -u ${ADMINMAIL} \
+  -f Passbolt \
+  -l Admin \
+  -r admin > ${tmpconf}
 
 # Extract link out of admin link output, remove ANSI
 userreg=$(tail -n1 ${tmpconf} | sed -e 's/\x1b\[[0-9;]*m//g')
