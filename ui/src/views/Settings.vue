@@ -46,12 +46,12 @@
               ref="host"
             ></cv-text-input>
             <cv-text-input
-              :label="$t('settings.adminmail')"
-              v-model="adminmail"
-              :placeholder="$t('settings.adminmail_placeholder')"
+              :label="$t('settings.admin_email')"
+              v-model="admin_email"
+              :placeholder="$t('settings.admin_email_placeholder')"
               :disabled="loading.getConfiguration || loading.configureModule || admin_created"
-              :invalid-message="error.adminmail"
-              ref="adminmail"
+              :invalid-message="error.admin_email"
+              ref="admin_email"
             ></cv-text-input>
             <cv-toggle
               value="letsEncrypt"
@@ -122,8 +122,8 @@ export default {
       urlCheckInterval: null,
       host: "",
       lets_encrypt: false,
-      adminurl: "",
-      adminmail: "",
+      admin_url: "",
+      admin_email: "",
       admin_created: false,
       admin_not_active: true,
       loading: {
@@ -135,8 +135,8 @@ export default {
         configureModule: "",
         host: "",
         lets_encrypt: "",
-        adminurl: "",
-        adminmail: "",
+        admin_url: "",
+        admin_email: "",
         admin_created: "",
         admin_not_active: "",
       },
@@ -160,7 +160,7 @@ export default {
   },
   methods: {
     goToPassboltWebapp() {
-      window.open(`${this.adminurl}`, "_blank");
+      window.open(`${this.admin_url}`, "_blank");
     },
     async getConfiguration() {
       this.loading.getConfiguration = true;
@@ -210,8 +210,8 @@ export default {
 
       this.host = config.host;
       this.lets_encrypt = config.lets_encrypt;
-      this.adminurl = config.adminurl;
-      this.adminmail = config.adminmail;
+      this.admin_url = config.admin_url;
+      this.admin_email = config.admin_email;
       this.admin_created = config.admin_created;
       this.admin_not_active = config.admin_not_active;
 
@@ -275,8 +275,8 @@ export default {
           data: {
             host: this.host,
             lets_encrypt: this.lets_encrypt,
-            adminurl: this.adminurl,
-            adminmail: this.adminmail,
+            admin_url: this.admin_url,
+            admin_email: this.admin_email,
             admin_created: this.admin_created,
             admin_not_active: this.admin_not_active,
           },

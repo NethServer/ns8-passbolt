@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Exit if admin url was already obtained
-[[ -f adminurl.env ]] && exit 0
+[[ -f admin_url.env ]] && exit 0
 
 # Wait for passbolt-app to be ready
 while ! podman exec passbolt-app /usr/bin/curl -s http://127.0.0.1:8080
@@ -10,7 +10,7 @@ do
   sleep 1
 done
 
-tmpconf=$(mktemp adminurl.XXXXXX)
+tmpconf=$(mktemp admin_url.XXXXXX)
 trap 'rm -f ${tmpconf}' EXIT
 
 # Get environment variables
@@ -27,8 +27,8 @@ source config.env
 # Extract link out of admin link output, remove ANSI
 userreg=$(tail -n1 ${tmpconf} | sed -e 's/\x1b\[[0-9;]*m//g')
 
-# If the registration was successful put the ADMINURL to adminurl.env
+# If the registration was successful put the ADMINURL to admin_url.env
 if [[ "$userreg" != *"User registration failed."* ]]; then
   echo "User registration successful."
-  echo "ADMINURL=$userreg" > adminurl.env
+  echo "ADMINURL=$userreg" > admin_url.env
 fi

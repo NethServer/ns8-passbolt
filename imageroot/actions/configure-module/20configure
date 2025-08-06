@@ -15,7 +15,7 @@ request = json.load(sys.stdin)
 
 host = request.get("host", '')
 le = request.get("lets_encrypt", False)
-adminmail = request.get("adminmail",'')
+admin_email = request.get("admin_email",'')
 
 # Setup environment for passbolt app
 config = {
@@ -24,7 +24,7 @@ config = {
     "DATASOURCES_DEFAULT_USERNAME": "passbolt",
     "DATASOURCES_DEFAULT_PASSWORD": "passbolt",
     "DATASOURCES_DEFAULT_DATABASE": "passbolt",
-    "ADMINMAIL": adminmail
+    "ADMINMAIL": admin_email
 }
 agent.write_envfile('config.env', config)
 
