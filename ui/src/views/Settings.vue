@@ -25,10 +25,7 @@
           kind="warning"
           :title="$t('settings.admin_created')"
           :description="
-            $t('settings.admin_created_description', {
-              user: 'admin@local',
-              password: 'pilerrocks',
-            })
+            $t('settings.admin_created_description')
           "
           :showCloseButton="false"
           @click="goToPassboltWebapp"
