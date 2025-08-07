@@ -4,9 +4,8 @@
 [[ -f admin_url.env ]] && exit 0
 
 # Wait for passbolt-app to be ready
-while ! podman exec passbolt-app /usr/bin/curl -s http://127.0.0.1:8080
+while ! podman exec passbolt-app /usr/bin/curl -s http://127.0.0.1:8080 2> /dev/null
 do
-  echo "Wait for passbolt-app"
   sleep 1
 done
 

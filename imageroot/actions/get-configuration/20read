@@ -17,14 +17,14 @@ try:
 except:
     config = {"host": "", "lets_encrypt": False}
 
-config["admin_url"] = agent.read_envfile("admin_url.env")["ADMINURL"] if os.path.exists("admin_url.env") else "url_not_available_yet"
+config["admin_url"] = agent.read_envfile("admin_url.env")["ADMINURL"] if os.path.exists("admin_url.env") else None
 
 try:
-    config["admin_email"] = agent.read_envfile("config.env")["ADMINMAIL"] if os.path.exists("config.env") else ""
+    config["admin_email"] = agent.read_envfile("config.env")["ADMINMAIL"] if os.path.exists("config.env") else None
 except:
-    config["admin_email"] = ""
+    config["admin_email"] = None
 
-if config["admin_email"] > "":
+if config["admin_email"]:
   # Check if admin exists
   command = "/usr/bin/podman exec -ti passbolt-db mysql -u root -ppassbolt -D passbolt -e 'select username from users where username = \"" + config["admin_email"] + "\"'"
   output = subprocess.run(command, shell=True, capture_output=True, text=True)
