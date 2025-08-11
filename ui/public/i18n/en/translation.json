@@ -18,7 +18,11 @@
         "mount": "Mount",
         "no_services": "No services",
         "no_images": "No images",
-        "no_volumes": "No volumes"
+        "no_volumes": "No volumes",
+        "passbolt_webapp": "Passbolt",
+        "not_configured": "Not configured",
+        "open_webapp": "Open Passbolt",
+        "configure": "Configure"
     },
     "settings": {
         "title": "Settings",

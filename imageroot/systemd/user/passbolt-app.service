@@ -18,6 +18,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/passbolt-app.pid --cidfile %t/
     --volume passbolt-gpg:/etc/passbolt/gpg:z \
     --volume passbolt-jwt:/etc/passbolt/jwt:z \
     ${PASSBOLT_IMAGE}
+ExecStartPost=runagent wait-for-passbolt
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/passbolt-app.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/passbolt-app.ctr-id
 PIDFile=%t/passbolt-app.pid

@@ -2,6 +2,7 @@
 Description=Podman passbolt-db.service
 BindsTo=passbolt.service
 After=passbolt.service
+Before=passbolt-app.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -e
+exec 1>&2 # Redirect any output to the journal (stderr)
+
+# Wait for the passbolt-app container to be active
+active=0
+for ((i = 0; i < 60; i++)); do
+    if podman exec passbolt-app /usr/bin/curl -s http://127.0.0.1:8080 2> /dev/null; then
+        active=1
+        break
+    fi
+    echo "Waiting for passbolt-app to be active : $i ..."
+    sleep 1
+done
+
+if [ $active -eq 1 ]; then
+    echo "Passbolt-app is active."
+    exit 0
+else
+    echo "Passbolt-app is not active."
+    exit 1
+fi

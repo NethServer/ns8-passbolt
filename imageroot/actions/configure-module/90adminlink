@@ -3,12 +3,7 @@
 # Exit if admin url was already obtained
 [[ -f admin_url.env ]] && exit 0
 
-# Wait for passbolt-app to be ready
-while ! podman exec passbolt-app /usr/bin/curl -s http://127.0.0.1:8080 2> /dev/null
-do
-  sleep 1
-done
-
+# Create temp file for catching the URL
 tmpconf=$(mktemp admin_url.XXXXXX)
 trap 'rm -f ${tmpconf}' EXIT
 
