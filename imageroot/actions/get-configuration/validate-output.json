@@ -46,9 +46,16 @@
             ]
         },
         "admin_email": {
-            "type": "string",
-            "format": "email",
-            "description": "Admin mail address"
+            "oneOf": [
+                {
+            	    "type": "string",
+                    "format": "email",
+                    "description": "Admin mail address"
+                },
+                {
+                    "const": null
+                }
+            ]
         },
         "admin_created": {
             "type": "boolean",
