@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+
+#
+# Copyright (C) 2024 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+import json
+
+# Get config
+try:
+    with open("config.json", 'r') as fp:
+        config = json.load(fp)
+except:
+    exit 0
+
+# If module is configured and admin_email is null, set a pseudo mail address as the module was updated and setting a mail address wasn't possible in previous versions.
+if config[hostname] and !config[admin_email] then:
+    config[admin_email] = "mail@already.set"
+
+# Dump config to json file
+with open('config.json', 'w') as cfp:
+    cfp.write(json.dumps(config))
