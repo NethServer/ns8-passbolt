@@ -2,7 +2,8 @@
     "common": {
         "required": "Required",
         "work_in_progress": "Work in progress",
-        "processing": "Processing..."
+        "processing": "Processing...",
+        "mail_invalid": "The mail address is invalid"
     },
     "status": {
         "title": "Status",
@@ -38,7 +39,9 @@
         "admin_email_format": "A mail address is required",
         "open_passbolt": "Open admin registration",
         "admin_created": "The admin account was created",
-        "admin_created_description": "To setup the admin account, click on the link"
+        "admin_created_description": "To setup the admin account, click on the link",
+        "host_unconfigured": "Hostname not configured",
+        "host_unconfigured_description": "Please be careful to setup a working hostname on first configuration. If the hostname is wrong you need to reset the app as the admin account creation won't work correctly."
     },
     "about": {
         "title": "About"

@@ -19,6 +19,18 @@
         />
       </cv-column>
     </cv-row>
+    <cv-row v-if="!host">
+      <cv-column>
+        <NsInlineNotification
+          kind="warning"
+          :title="$t('settings.host_unconfigured')"
+          :description="
+            $t('settings.host_unconfigured_description')
+          "
+          :showCloseButton="false"
+        />
+      </cv-column>
+    </cv-row>
     <cv-row v-if="admin_created && admin_not_active">
       <cv-column>
         <NsInlineNotification
@@ -226,6 +238,29 @@ export default {
 
         if (isValidationOk) {
           this.focusElement("host");
+          isValidationOk = false;
+        }
+      }      
+      if (!this.admin_email) {
+        // admin_email field cannot be empty
+        this.error.admin_email = this.$t("common.required");
+
+        if (isValidationOk) {
+          this.focusElement("admin_email");
+          isValidationOk = false;
+        }
+      }
+      //Validate an email login form
+      function validateEmail(email) {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+      }
+      if (!validateEmail(this.admin_email)) {
+        // admin_email has to be a mail address
+        this.error.admin_email = this.$t("common.mail_invalid");
+
+        if (isValidationOk) {
+          this.focusElement("admin_email");
           isValidationOk = false;
         }
       }
