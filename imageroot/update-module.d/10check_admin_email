@@ -28,6 +28,7 @@ host = config["host"]
 # If module is configured and admin_email is null we update from an old version
 # Set admin_created and admin_not_enabled to disable the admin email UI field
 if host > "" and not admin_email:
+    config["admin_email"] = "adminmail@already.set"
     config["admin_created"] = True
     config["admin_not_enabled"] = False
     configenv = {
