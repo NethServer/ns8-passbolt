@@ -5,19 +5,39 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
+import agent
 import json
+import os
 
 # Get config
 try:
     with open("config.json", 'r') as fp:
         config = json.load(fp)
 except:
-    exit 0
+    config = {"host": "", "lets_encrypt": False, "admin_email": ""}
 
-# If module is configured and admin_email is null, set a pseudo mail address as the module was updated and setting a mail address wasn't possible in previous versions.
-if config[hostname] and !config[admin_email] then:
-    config[admin_email] = "mail@already.set"
+# Get admin_email
+try:
+    admin_email = agent.read_envfile("config.env")["ADMINMAIL"] if os.path.exists("config.env") else None
+except:
+    admin_email = None
 
-# Dump config to json file
-with open('config.json', 'w') as cfp:
-    cfp.write(json.dumps(config))
+# Get host
+host = config["host"]
+
+# If module is configured and admin_email is null we update from an old version
+# Set admin_created and admin_not_enabled to disable the admin email UI field
+if host > "" and not admin_email:
+    config["admin_created"] = True
+    config["admin_not_enabled"] = False
+    configenv = {
+        "APP_FULL_BASE_URL": f"https://{host}",
+        "DATASOURCES_DEFAULT_HOST": "127.0.0.1",
+        "DATASOURCES_DEFAULT_USERNAME": "passbolt",
+        "DATASOURCES_DEFAULT_PASSWORD": "passbolt",
+        "DATASOURCES_DEFAULT_DATABASE": "passbolt",
+        "ADMINMAIL": admin_email
+    }
+    agent.write_envfile('config.env', configenv)
+    with open('config.json', 'w') as cfp:
+        cfp.write(json.dumps(config))
