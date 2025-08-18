@@ -27,7 +27,7 @@ host = config["host"]
 
 # If module is configured and admin_email is null we update from an old version
 # Set admin_created and admin_not_enabled to disable the admin email UI field
-if host > "" and not admin_email:
+if host and (admin_email == "" or admin_email is None):
     config["admin_email"] = "adminmail@already.set"
     config["admin_created"] = True
     config["admin_not_enabled"] = False
@@ -37,7 +37,7 @@ if host > "" and not admin_email:
         "DATASOURCES_DEFAULT_USERNAME": "passbolt",
         "DATASOURCES_DEFAULT_PASSWORD": "passbolt",
         "DATASOURCES_DEFAULT_DATABASE": "passbolt",
-        "ADMINMAIL": admin_email
+        "ADMINMAIL": config["admin_email"]
     }
     agent.write_envfile('config.env', configenv)
     with open('config.json', 'w') as cfp:
