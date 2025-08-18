@@ -2,6 +2,7 @@
 Description=Podman passbolt-db.service
 BindsTo=passbolt.service
 After=passbolt.service
+Before=passbolt-app.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
@@ -15,7 +16,10 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/passbolt-db.pid --cidfile %t/p
     --name passbolt-db \
     --env-file=%S/state/database.env \
     --volume passbolt-db-data:/var/lib/mysql:z \
+    --env MARIADB_AUTO_UPGRADE=1 \
     ${MARIADB_IMAGE}
+ExecStartPost=/usr/bin/podman exec passbolt-db /bin/bash -c 'printf "[client] \npassword=passbolt" > /root/.my.cnf 2> /dev/null'
+ExecStartPost=/usr/bin/podman exec passbolt-db /bin/bash -c "while ! mysqladmin ping -h localhost -P 3306 -u root; do sleep 1; done 2> /dev/null"
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/passbolt-db.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/passbolt-db.ctr-id
 PIDFile=%t/passbolt-db.pid

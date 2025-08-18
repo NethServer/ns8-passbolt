@@ -8,11 +8,36 @@
 import json
 import sys
 import agent
+import os
+import subprocess
 
 try:
     with open("config.json", 'r') as fp:
         config = json.load(fp)
 except:
     config = {"host": "", "lets_encrypt": False}
+
+config["admin_url"] = agent.read_envfile("admin_url.env")["ADMINURL"] if os.path.exists("admin_url.env") else None
+
+try:
+    config["admin_email"] = agent.read_envfile("config.env")["ADMINMAIL"] if os.path.exists("config.env") else None
+except:
+    config["admin_email"] = None
+
+if config["admin_email"]:
+  # Check if a user exists
+  command = "/usr/bin/podman exec -ti passbolt-db mysql -u passbolt -ppassbolt -D passbolt -e 'select username from users;'"
+  output = subprocess.run(command, shell=True, capture_output=True, text=True)
+  admin_found = "username" in output.stdout
+  config['admin_created'] = True if admin_found else False
+
+  # Check if a user is active
+  command = "/usr/bin/podman exec -ti passbolt-db mysql -u passbolt -ppassbolt -D passbolt -e 'select username from users where active=1'"
+  output = subprocess.run(command, shell=True, capture_output=True, text=True)
+  admin_active = "username" in output.stdout
+  config['admin_not_active'] = False if admin_active else True
+else:
+  config['admin_created'] = False
+  config['admin_not_active'] = True
 
 json.dump(config, fp=sys.stdout)

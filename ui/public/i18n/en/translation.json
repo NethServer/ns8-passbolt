@@ -2,7 +2,8 @@
     "common": {
         "required": "Required",
         "work_in_progress": "Work in progress",
-        "processing": "Processing..."
+        "processing": "Processing...",
+        "mail_invalid": "The mail address is invalid"
     },
     "status": {
         "title": "Status",
@@ -18,20 +19,29 @@
         "mount": "Mount",
         "no_services": "No services",
         "no_images": "No images",
-        "no_volumes": "No volumes"
+        "no_volumes": "No volumes",
+        "passbolt_webapp": "Passbolt",
+        "not_configured": "Not configured",
+        "open_webapp": "Open Passbolt",
+        "configure": "Configure"
     },
     "settings": {
         "title": "Settings",
         "configure_instance": "Configure {instance}",
         "save": "Save",
         "host": "Host name",
+        "admin_email": "Admin mail address",
         "disabled": "Disabled",
         "enabled": "Enabled",
         "lets_encrypt": "Request Let's Encrypt certificate",
         "host_placeholder": "E.g. passbolt.example.org",
-        "execute_command": "After first configuration, execute the below command to create the admin user:",
-        "output_example": "The command will output a URL to complete the setup in a browser. The URL will look like this:",
-        "first_config": "runagent -m {instance} podman exec -ti passbolt-app /bin/bash /usr/share/php/passbolt/bin/cake passbolt register_user -u jdoe@nethserver.org -f John -l Doe -r admin"
+        "admin_email_placeholder": "E.g. admin@example.com",
+        "admin_email_format": "A mail address is required",
+        "open_passbolt": "Open admin registration",
+        "admin_created": "The admin account was created",
+        "admin_created_description": "To setup the admin account, click on the link",
+        "host_unconfigured": "Hostname not configured",
+        "host_unconfigured_description": "Please be careful to setup a working hostname on first configuration. If the hostname is wrong you need to reset the app as the admin account creation won't work correctly."
     },
     "about": {
         "title": "About"

@@ -11,19 +11,67 @@
     </cv-row>
     <cv-row v-if="error.getConfiguration">
       <cv-column>
-        <NsInlineNotification kind="error" :title="$t('action.get-configuration')" :description="error.getConfiguration"
-          :showCloseButton="false" />
+        <NsInlineNotification
+          kind="error"
+          :title="$t('action.get-configuration')"
+          :description="error.getConfiguration"
+          :showCloseButton="false"
+        />
+      </cv-column>
+    </cv-row>
+    <cv-row v-if="!host">
+      <cv-column>
+        <NsInlineNotification
+          kind="warning"
+          :title="$t('settings.host_unconfigured')"
+          :description="
+            $t('settings.host_unconfigured_description')
+          "
+          :showCloseButton="false"
+        />
+      </cv-column>
+    </cv-row>
+    <cv-row v-if="admin_created && admin_not_active">
+      <cv-column>
+        <NsInlineNotification
+          kind="warning"
+          :title="$t('settings.admin_created')"
+          :description="
+            $t('settings.admin_created_description')
+          "
+          :showCloseButton="false"
+          @click="goToPassboltWebapp"
+          :actionLabel="$t('settings.open_passbolt')"
+        />
       </cv-column>
     </cv-row>
     <cv-row>
       <cv-column>
         <cv-tile light>
           <cv-form @submit.prevent="configureModule">
-            <cv-text-input :label="$t('settings.host')" v-model="host" :placeholder="$t('settings.host_placeholder')"
-              :disabled="loading.getConfiguration || loading.configureModule" :invalid-message="error.host"
-              ref="host"></cv-text-input>
-            <cv-toggle value="letsEncrypt" :label="$t('settings.lets_encrypt')" v-model="lets_encrypt"
-              :disabled="loading.getConfiguration || loading.configureModule" class="mg-bottom">
+            <cv-text-input
+              :label="$t('settings.host')"
+              v-model="host"
+              :placeholder="$t('settings.host_placeholder')"
+              :disabled="loading.getConfiguration || loading.configureModule"
+              :invalid-message="error.host"
+              ref="host"
+            ></cv-text-input>
+            <cv-text-input
+              :label="$t('settings.admin_email')"
+              v-model="admin_email"
+              :placeholder="$t('settings.admin_email_placeholder')"
+              :disabled="loading.getConfiguration || loading.configureModule || admin_created"
+              :invalid-message="error.admin_email"
+              ref="admin_email"
+            ></cv-text-input>
+            <cv-toggle
+              value="letsEncrypt"
+              :label="$t('settings.lets_encrypt')"
+              v-model="lets_encrypt"
+              :disabled="loading.getConfiguration || loading.configureModule"
+              class="mg-bottom"
+            >
               <template slot="text-left">{{
                 $t("settings.disabled")
               }}</template>
@@ -33,27 +81,22 @@
             </cv-toggle>
             <cv-row v-if="error.configureModule">
               <cv-column>
-                <NsInlineNotification kind="error" :title="$t('action.configure-module')"
-                  :description="error.configureModule" :showCloseButton="false" />
+                <NsInlineNotification
+                  kind="error"
+                  :title="$t('action.configure-module')"
+                  :description="error.configureModule"
+                  :showCloseButton="false"
+                />
               </cv-column>
             </cv-row>
-            <NsButton kind="primary" :icon="Save20" :loading="loading.configureModule"
-              :disabled="loading.getConfiguration || loading.configureModule">{{ $t("settings.save") }}</NsButton>
+            <NsButton
+              kind="primary"
+              :icon="Save20"
+              :loading="loading.configureModule"
+              :disabled="loading.getConfiguration || loading.configureModule"
+              >{{ $t("settings.save") }}</NsButton
+            >
           </cv-form>
-        </cv-tile>
-      </cv-column>
-    </cv-row>
-    <cv-row>
-      <cv-column>
-        <cv-tile light>
-          <p>{{ $t("settings.execute_command") }}</p>
-          <NsCodeSnippet :copyTooltip="$t('common.copy_to_clipboard')" :copy-feedback="$t('common.copied_to_clipboard')"
-            :feedback-aria-label="$t('common.copied_to_clipboard')" :wrap-text="true" :moreText="$t('common.show_more')"
-            :lessText="$t('common.show_less')" hideExpandButton class="mg-top-md mg-bottom-md">{{
-              $t("settings.first_config", { instance: instanceName }) }}</NsCodeSnippet>
-          <p>{{ $t("settings.output_example") }}</p>
-          <pre class="mg-top-md mg-bottom-md">https://{{ host || 'passbolt.example.org'
-            }}/setup/start/b96b40be-b71f-46c7-938d-dffb71d9efc8/293687a9-0203-4830-93de-a6c9b8d016d9</pre>
         </cv-tile>
       </cv-column>
     </cv-row>
@@ -91,6 +134,10 @@ export default {
       urlCheckInterval: null,
       host: "",
       lets_encrypt: false,
+      admin_url: "",
+      admin_email: "",
+      admin_created: false,
+      admin_not_active: true,
       loading: {
         getConfiguration: false,
         configureModule: false,
@@ -99,7 +146,11 @@ export default {
         getConfiguration: "",
         configureModule: "",
         host: "",
-        lets_encrypt: ""
+        lets_encrypt: "",
+        admin_url: "",
+        admin_email: "",
+        admin_created: "",
+        admin_not_active: "",
       },
     };
   },
@@ -120,6 +171,9 @@ export default {
     this.getConfiguration();
   },
   methods: {
+    goToPassboltWebapp() {
+      window.open(`${this.admin_url}`, "_blank");
+    },
     async getConfiguration() {
       this.loading.getConfiguration = true;
       this.error.getConfiguration = "";
@@ -168,6 +222,10 @@ export default {
 
       this.host = config.host;
       this.lets_encrypt = config.lets_encrypt;
+      this.admin_url = config.admin_url;
+      this.admin_email = config.admin_email;
+      this.admin_created = config.admin_created;
+      this.admin_not_active = config.admin_not_active;
 
       this.focusElement("host");
     },
@@ -180,6 +238,29 @@ export default {
 
         if (isValidationOk) {
           this.focusElement("host");
+          isValidationOk = false;
+        }
+      }      
+      if (!this.admin_email) {
+        // admin_email field cannot be empty
+        this.error.admin_email = this.$t("common.required");
+
+        if (isValidationOk) {
+          this.focusElement("admin_email");
+          isValidationOk = false;
+        }
+      }
+      //Validate an email login form
+      function validateEmail(email) {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+      }
+      if (!validateEmail(this.admin_email)) {
+        // admin_email has to be a mail address
+        this.error.admin_email = this.$t("common.mail_invalid");
+
+        if (isValidationOk) {
+          this.focusElement("admin_email");
           isValidationOk = false;
         }
       }
@@ -229,6 +310,10 @@ export default {
           data: {
             host: this.host,
             lets_encrypt: this.lets_encrypt,
+            admin_url: this.admin_url,
+            admin_email: this.admin_email,
+            admin_created: this.admin_created,
+            admin_not_active: this.admin_not_active,
           },
           extra: {
             title: this.$t("settings.configure_instance", {

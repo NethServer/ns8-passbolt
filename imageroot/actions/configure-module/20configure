@@ -15,7 +15,7 @@ request = json.load(sys.stdin)
 
 host = request.get("host", '')
 le = request.get("lets_encrypt", False)
-
+admin_email = request.get("admin_email",'')
 
 # Setup environment for passbolt app
 config = {
@@ -23,8 +23,8 @@ config = {
     "DATASOURCES_DEFAULT_HOST": "127.0.0.1",
     "DATASOURCES_DEFAULT_USERNAME": "passbolt",
     "DATASOURCES_DEFAULT_PASSWORD": "passbolt",
-    "DATASOURCES_DEFAULT_DATABASE": "passbolt"
-
+    "DATASOURCES_DEFAULT_DATABASE": "passbolt",
+    "ADMINMAIL": admin_email
 }
 agent.write_envfile('config.env', config)
 
@@ -40,7 +40,6 @@ agent.write_envfile('database.env', db_config)
 # For later use and backup
 with open('config.json', 'w') as cfp:
     cfp.write(json.dumps(request))
-
 
 # Configure Traefik to route "/passbolt" path requests to the passbolt service
 response = agent.tasks.run(

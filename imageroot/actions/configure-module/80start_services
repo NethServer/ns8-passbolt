@@ -10,4 +10,4 @@
 touch smarthost.env
 
 systemctl --user enable passbolt.service
-systemctl --user restart passbolt.service
+systemctl --user restart passbolt.service passbolt-db.service passbolt-app.service

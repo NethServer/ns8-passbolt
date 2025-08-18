@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+
+#
+# Copyright (C) 2024 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+import agent
+import json
+import os
+
+# Get config
+try:
+    with open("config.json", 'r') as fp:
+        config = json.load(fp)
+except:
+    config = {"host": "", "lets_encrypt": False, "admin_email": ""}
+
+# Get admin_email
+try:
+    admin_email = agent.read_envfile("config.env")["ADMINMAIL"] if os.path.exists("config.env") else None
+except:
+    admin_email = None
+
+# Get host
+host = config["host"]
+
+# If module is configured and admin_email is null we update from an old version
+# Set admin_created and admin_not_enabled to disable the admin email UI field
+if host and (admin_email == "" or admin_email is None):
+    config["admin_email"] = "adminmail@already.set"
+    config["admin_created"] = True
+    config["admin_not_enabled"] = False
+    configenv = {
+        "APP_FULL_BASE_URL": f"https://{host}",
+        "DATASOURCES_DEFAULT_HOST": "127.0.0.1",
+        "DATASOURCES_DEFAULT_USERNAME": "passbolt",
+        "DATASOURCES_DEFAULT_PASSWORD": "passbolt",
+        "DATASOURCES_DEFAULT_DATABASE": "passbolt",
+        "ADMINMAIL": config["admin_email"]
+    }
+    agent.write_envfile('config.env', configenv)
+    with open('config.json', 'w') as cfp:
+        cfp.write(json.dumps(config))

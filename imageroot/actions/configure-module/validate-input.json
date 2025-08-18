@@ -6,13 +6,15 @@
     "examples": [
         {
             "host": "passbolt.gs.nethserver.net",
+            "admin_email": "admin@example.com",
             "lets_encrypt": true
-          }
+        }
     ],
     "type": "object",
     "required": [
         "host",
-        "lets_encrypt"
+        "lets_encrypt",
+        "admin_email"
       ],
       "properties": {
         "host": {
@@ -21,6 +23,10 @@
           "pattern": "\\.",
           "type": "string",
           "minLength": 1
+        },
+	      "admin_email": {
+          "description": "The mail address of the administrator user",
+          "format": "idn-email"
         },
         "lets_encrypt": {
           "type": "boolean",

@@ -1,10 +1,71 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "get-configuration output",
-    "$id": "http://schema.nethserver.org/passbolt/get-configuration-output.json",
+    "title": "Get passbolt configuration",
+    "$id": "http://nethserver.org/json-schema/task/output/piler/get-configuration",
     "description": "Get passbolt configuration",
     "examples": [
-        {"host": "passbolt.gs.nethserver.net", "lets_encrypt": false}
+        {
+            "host": "passbolt.nethserver.org",
+            "lets_encrypt": true,
+            "admin_url": "https://passbolt.nethserver.org/setup/start/e78b7682-632b-4e2d-86c4-779a0f14edf6/86502cf4-2c99-453b-82fb-e57719da9bbe",
+            "admin_email": "admin@nethserver.org",
+            "admin_created": false,
+            "admin_not_active": false
+        }
     ],
-    "type": "object"
+    "type": "object",
+    "required": [
+        "host",
+        "lets_encrypt",
+        "admin_url",
+        "admin_email",
+        "admin_created",
+        "admin_not_active"
+    ],
+    "properties": {
+        "host": {
+            "description": "Host name for the application, like 'piler.nethserver.org'",
+            "format": "idn-hostname",
+            "title":"Hostname of Passbolt User Interface"
+        },
+        "lets_encrypt": {
+            "type": "boolean",
+            "title": "Let's Encrypt certificate",
+            "description": "Request a valid Let's Encrypt certificate."
+        },
+        "admin_url": {
+            "oneOf": [
+                {
+                    "type": "string",
+                    "description": "URL for creating the admin",
+                    "title": "Admin URL"
+                },
+                {
+                    "const": null
+                }
+            ]
+        },
+        "admin_email": {
+            "oneOf": [
+                {
+            	    "type": "string",
+                    "format": "email",
+                    "description": "Admin mail address"
+                },
+                {
+                    "const": null
+                }
+            ]
+        },
+        "admin_created": {
+            "type": "boolean",
+            "title": "Admin created",
+            "description": "True if the admin was created"
+        },
+        "admin_not_active": {
+            "type": "boolean",
+            "title": "Admin not active",
+            "description": "True if the admin is not active"
+        }
+    }
 }
