@@ -10,12 +10,12 @@ Check if passbolt is installed correctly
     Set Suite Variable    ${module_id}    ${output.module_id}
 
 Check if passbolt can be configured
-    ${rc} =    Execute Command    api-cli run module/${module_id}/configure-module --data '{}'
+    ${rc} =    Execute Command    api-cli run module/${module_id}/configure-module --data '{"host": "passbolt.fqdn.test","lets_encrypt": false,"admin_email": "admin@test.local"}'
     ...    return_rc=True  return_stdout=False
     Should Be Equal As Integers    ${rc}  0
 
 Check if passbolt works as expected
-    ${rc} =    Execute Command    curl -f http://127.0.0.1/passbolt/
+    ${rc} =    Execute Command    sleep 10 && curl -H "Host: passbold.fqdn.test" -fkL https://127.0.0.1/
     ...    return_rc=True  return_stdout=False
     Should Be Equal As Integers    ${rc}  0
 
