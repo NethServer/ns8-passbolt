@@ -34,7 +34,7 @@ Check if passbolt works as expected
     Retry test    Backend URL is reachable
 
 Verify passbolt frontend title
-    ${output} =    Execute Command    curl -s ${backend_url}
+    ${output} =    Execute Command    curl -s ${backend_url}/auth/login
     Should Contain    ${output}    <title>Passbolt
 
 Check if passbolt is removed correctly
