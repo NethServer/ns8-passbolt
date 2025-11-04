@@ -15,7 +15,7 @@ Check if passbolt can be configured
     Should Be Equal As Integers    ${rc}  0
 
 Check if passbolt works as expected
-    ${rc} =    Execute Command    sleep 10 && curl -H "Host: passbold.fqdn.test" -fkL https://127.0.0.1/
+    ${rc} =    Execute Command    sleep 10 && curl -H "Host: passbolt.fqdn.test" -fkL https://127.0.0.1/
     ...    return_rc=True  return_stdout=False
     Should Be Equal As Integers    ${rc}  0
 
