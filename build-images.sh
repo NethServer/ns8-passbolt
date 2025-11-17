@@ -39,7 +39,7 @@ buildah config --entrypoint=/ \
     --label="org.nethserver.authorizations=traefik@node:routeadm" \
     --label="org.nethserver.tcp-ports-demand=1" \
     --label="org.nethserver.rootfull=0" \
-    --label="org.nethserver.images=docker.io/mariadb:10.11.14 docker.io/passbolt/passbolt:5.6.1-1-ce-non-root" \
+    --label="org.nethserver.images=docker.io/mariadb:10.11.14 docker.io/passbolt/passbolt:5.7.2-1-ce-non-root" \
     "${container}"
 # Commit the image
 buildah commit "${container}" "${repobase}/${reponame}"
