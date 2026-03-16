@@ -19,7 +19,7 @@
         />
       </cv-column>
     </cv-row>
-    <cv-row v-if="!host">
+    <cv-row v-if="!host && !loading.getConfiguration">
       <cv-column>
         <NsInlineNotification
           kind="warning"
