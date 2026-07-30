@@ -24,9 +24,7 @@
         <NsInlineNotification
           kind="warning"
           :title="$t('settings.host_unconfigured')"
-          :description="
-            $t('settings.host_unconfigured_description')
-          "
+          :description="$t('settings.host_unconfigured_description')"
           :showCloseButton="false"
         />
       </cv-column>
@@ -36,9 +34,7 @@
         <NsInlineNotification
           kind="warning"
           :title="$t('settings.admin_created')"
-          :description="
-            $t('settings.admin_created_description')
-          "
+          :description="$t('settings.admin_created_description')"
           :showCloseButton="false"
           @click="goToPassboltWebapp"
           :actionLabel="$t('settings.open_passbolt')"
@@ -61,7 +57,11 @@
               :label="$t('settings.admin_email')"
               v-model="admin_email"
               :placeholder="$t('settings.admin_email_placeholder')"
-              :disabled="loading.getConfiguration || loading.configureModule || admin_created"
+              :disabled="
+                loading.getConfiguration ||
+                loading.configureModule ||
+                admin_created
+              "
               :invalid-message="error.admin_email"
               ref="admin_email"
             ></cv-text-input>
@@ -240,7 +240,7 @@ export default {
           this.focusElement("host");
           isValidationOk = false;
         }
-      }      
+      }
       if (!this.admin_email) {
         // admin_email field cannot be empty
         this.error.admin_email = this.$t("common.required");
