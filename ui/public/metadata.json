@@ -17,7 +17,7 @@
   "docs": {
     "documentation_url": "https://www.passbolt.com/docs/",
     "bug_url": "https://github.com/NethServer/dev",
-    "code_url": "https://github.com/author/ns8-passbolt"
+    "code_url": "https://github.com/NethServer/ns8-passbolt"
   },
   "source": "ghcr.io/nethserver/passbolt"
 }
